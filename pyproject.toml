@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "twitter-clone"
+version = "0.1.0"
+description = ""
+authors = ["Beatriz <beatrizleite_aragao@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flake8 = "^6.1.0"
+django = "^4.2.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+factory-boy = "^3.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
