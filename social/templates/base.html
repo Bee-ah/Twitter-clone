@@ -1,11 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'social/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'basic/style.css' %}">
+    <script src="{% static 'social/js/bootstrap.min.js' %}"></script>  
+
 </head>
 <body>
+    <div class="container-fluid">
+    {% include 'navbar.html' %}
+        <br/>
+        <div class="container col-md-9 ml-sm-auto col-lg-10 px-4">
+        {% block content %}
+        {% endblock %}
+        </div>
+
+    </div>
     
 </body>
 </html>
