@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if profile %}
+<div class="container-flex">
+<div class="left-side">
+
+    <h1>{{profile.user.username}}</h1>
+    <strong>Follows</strong><br/>
+    {% for following in profile.follows.all %}
+    <div class="card mb-3 card-left w-75">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-start" alt="Profile Pic">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <a href = "{% url 'profile' following.user.id %}">
+                @{{following}}
+            </a><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    
+    <strong>Followed By</strong><br/>
+    {% for following in profile.followed_by.all %}
+    <div class="card mb-3 w-75 card-left">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-start" alt="Profile Pic">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <a href = "{% url 'profile' following.user.id %}">
+                @{{following}}
+            </a><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    <form method='post'>
+        {% csrf_token %} <!--security-->
+        {% if profile in user.profile.follows.all %}
+        <button type="submit" class="btn btn-outline-primary" name="follow" value="unfollow">Unfollow</button>
+        {% else %}
+        <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
+        {% endif %}
+    </form> 
+
+</div>    
+
+<div class="main-content">
+    <h5>Hello user!</h5>
+</div>
+
+<div class="right-side">
+    <p>Teste</p>
+
+</div>
+</div>
+{% endif %}
+{% endblock %}

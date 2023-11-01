@@ -1,5 +1,32 @@
-li {
-    background-color: green;
-    
-  }
+* {
+  box-sizing:border-box;
+}
 
+.container-flex{
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.card-left{
+  margin-left:12%
+
+
+}
+
+
+/*desktop breakpoint*/
+@media(min-width:1024px){
+  .container-flex > .left-side{
+    background:#f5d55f;
+    order : -1;
+    width : 25%;
+  } 
+ .container-flex > .right-side{
+  background:#3637a1;
+  width:25%;
+ }
+ .container-flex > .main-content{
+  width:50%;
+  background:#a74141;
+ }
+}
