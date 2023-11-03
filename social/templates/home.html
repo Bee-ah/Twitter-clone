@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div class="container">
-<h1>Hello World!</h1>
+{% for mensagem in mensagens %}
+<div class="mensagem-geral col-7">
+{{mensagem}}<br/><br/>
 </div>
+{% endfor %}
+<div class="col-3">
+    {% if form %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Send message</button>
+        </form>  
+{% endif %}
+    </div>
 {% endblock %}

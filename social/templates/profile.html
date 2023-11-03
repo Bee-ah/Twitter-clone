@@ -5,13 +5,12 @@
 <div class="container-flex">
 <div class="left-side">
 
-    <h1>{{profile.user.username}}</h1>
     <strong>Follows</strong><br/>
     {% for following in profile.follows.all %}
     <div class="card mb-3 card-left w-75">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-start" alt="Profile Pic">
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle" alt="Profile Pic">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -29,7 +28,7 @@
     <div class="card mb-3 w-75 card-left">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-start" alt="Profile Pic">
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle" alt="Profile Pic">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -41,6 +40,7 @@
         </div>
       </div>
     {% endfor %}
+    {% if request.user != profile.user %}
     <form method='post'>
         {% csrf_token %} <!--security-->
         {% if profile in user.profile.follows.all %}
@@ -48,16 +48,55 @@
         {% else %}
         <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
         {% endif %}
-    </form> 
+    </form>
+    {% endif %} 
 
 </div>    
 
 <div class="main-content">
-    <h5>Hello user!</h5>
-</div>
+    <div class="pagina">
+    <div class="theme-back">  
+    <img src = "{% static 'images/theme.jpg' %}" class="img-fluid tema" alt="theme">
+    </div>
+    <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+    <button type="button" class="btn btn-primary btn-sm edit-profile">Edit Profile</button>  
+  </div>  
+  <h4>{{profile.user.username}}</h4>
+  {% if mensagens %}
+  {% for mensagem in mensagens %}
+  <div class="mensagem-geral">
+  {{mensagem}}<br/><br/>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  </div>
 
 <div class="right-side">
     <p>Teste</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        {% if form %}
+        <div class="modal-body"></div>
+        <form method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+          <button type="submit" class="btn btn-primary" name="form">Send message</button>
+        </form>
+       </div>
+        {% endif %}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>
 </div>
