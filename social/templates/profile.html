@@ -65,7 +65,12 @@
   {% if mensagens %}
   {% for mensagem in mensagens %}
   <div class="mensagem-geral">
-  {{mensagem}}<br/><br/>
+  <p class="fw-bold d-inline">{{mensagem.user.username}}</p>
+  <small class="text-muted text-lowercase d-inline ">
+    @{{mensagem.user.username}}  {{mensagem.created_at}}
+  </small><br/>
+  {{mensagem.body}}
+  <br/><br/>
   </div>
   {% endfor %}
   {% endif %}
@@ -74,7 +79,7 @@
 
 <div class="right-side">
     <p>Teste</p>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tweet</button>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -91,9 +96,6 @@
         </form>
        </div>
         {% endif %}
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
     </div>
   </div>
 </div>

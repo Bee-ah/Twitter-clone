@@ -52,6 +52,8 @@
   right:0px;
 }
 
+
+
 /*desktop breakpoint*/
 @media(min-width:1024px){
   .container-flex > .left-side{

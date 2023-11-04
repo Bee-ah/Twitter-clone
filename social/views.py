@@ -1,7 +1,10 @@
 from django.shortcuts import render , redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate , login , logout
 from .models import Profile , Message
 from .forms import MessageForm
+
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -52,3 +55,24 @@ def profile(request , pk):
     else:
         messages.success(request , ("You must be logged in to view this page"))
         return redirect('home') 
+    
+def login_user(request):
+    error_message =None
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request , username=username , password=password) 
+        if user is not None:
+            login(request,user) 
+            messages.success(request , ("You have been logged in"))
+            return redirect('home')
+        else:
+            error_message = "Invalid login credentials. Please try again."
+        return render(request, 'login.html', {'error_message': error_message})
+    else:
+        return render(request , "login.html" , {})
+
+def logout_user(request):
+    logout(request)    
+    messages.success(request , ("See you next time!"))
+    return redirect('login')

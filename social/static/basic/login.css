@@ -1,0 +1,57 @@
+* {
+    box-sizing:border-box;
+    border: 0;
+    margin: 0px;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  
+  }
+.container-login{
+    height: 100vh;
+    display:flex;
+  }
+.cont-img{
+    max-width: 50%;
+    width:50%;
+    background-image: url('../images/login-image.jpg');
+    background-size: cover;
+    background-position: center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+      /* Default size for desktop */
+ .logo{
+  width: 300px;
+  height: 300px;
+}
+.container-right{
+  width:50%;
+  max-width:50%;
+  background-color:#fff;
+  display:flex;
+  align-items: center;
+
+}
+.login-right{
+  padding:3rem;
+}
+h1{
+  font-size:3rem;
+}
+
+.botao{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Media query for smaller screens, e.g., phones */
+@media (max-width: 768px) {
+  .logo{
+      width: 100px ; /* Adjust the width to your desired size for phones */
+      height: 100px ; /* Adjust the height accordingly */
+  }
+}
