@@ -3,8 +3,21 @@
 {% block content %}
 {% for mensagem in mensagens %}
 <div class="mensagem-geral col-7">
-{{mensagem}}<br/><br/>
+    <div class="tweet-img-position ">
+        <div class="circle circle-2">
+          {% if mensagem.user.profile.profile_image %}
+      <img src="{{ mensagem.user.profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
+      {% else %}
+      <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
+      {% endif %}
+        </div>
+      
+      </div>  
+      <div class="text-position ">
+{{mensagem|safe}}
 </div>
+</div>
+
 {% endfor %}
 <div class="col-3">
     {% if form %}

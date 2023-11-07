@@ -12,10 +12,10 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (f"{self.user}"
-                f"@{str(self.user).lower()}"
-                f"({self.created_at:%Y-%m-%d %H:%M})"
-                f"{self.body}..."
+        return (f"<p class='fw-bold d-inline'>{self.user}</p>"
+                f"<span class='text-muted'> @{str(self.user).lower()} &#183; </span>"
+                f"<span class='text-muted'>({self.created_at:%Y-%m-%d %H:%M})</span>"
+                f"<br/>{self.body}..."
                 )
 
 #create a User Profile Model
@@ -25,6 +25,8 @@ class Profile(models.Model):
                                      symmetrical=False,
                                      blank=True)
     date = models.DateTimeField(User , auto_now=True)
+    profile_image = models.ImageField(null = True ,  blank=True , upload_to = "images/profile/")
+    background_image = models.ImageField(null = True , blank = True , upload_to = "images/background/")
     def __str__(self):
         return self.user.username
 

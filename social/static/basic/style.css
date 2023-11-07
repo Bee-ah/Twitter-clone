@@ -1,10 +1,21 @@
 * {
   box-sizing:border-box;
   border: 0;
-  margin: 5px;
+  margin: 0px;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 
+}
+
+.card-image{
+  display:flex;
+  flex-direction:row;
+}
+.follows-image{
+  width:5rem;
+}
+.card-body-follower{
+  width:5rem;
 }
 
 .pagina{
@@ -14,8 +25,12 @@
 
 .mensagem-geral{
   border-top: 2px solid #cfc1c1;
-  border-bottom: 2px solid #cfc1c1;
-
+  position:relative;
+  display:flex;
+  flex-direction: row;
+  margin:5px;
+  padding-top:0.5rem;
+ 
 }
 
 .container-flex{
@@ -27,12 +42,39 @@
   margin-left:12%
 }
 
-.imagem{
-  width:8rem;
-  position:absolute;
-  bottom: 0;
+.image-position{
+  position: absolute;
+  bottom: -15px;
   left: 0.6rem;
-  z-index: 1; 
+  z-index: 1;
+}
+
+.tweet-img-position{
+  margin-right:0.5rem;
+}
+
+
+
+.circle {
+  width: 8rem;  
+  height: 8rem;
+  border-radius: 50%;  
+  overflow: hidden;  
+  border: 3px solid #fff;
+  /* Add positioning styles if needed */
+  position: relative;
+}
+.circle-2{
+  width:3rem;
+  height:3rem;
+}
+
+.imagem {
+  width: 100%;  /* Make the image fill the circular container */
+  height: 100%;  /* Automatically adjust the height to maintain the aspect ratio */
+  display: block; /* Ensure the image is centered within the circle */
+  margin:0px;
+  object-fit: cover;
 }
 
 .theme-back{
@@ -49,17 +91,21 @@
 }
 .edit-profile{
   position: absolute;
-  right:0px;
+  right:15px;
+  margin-top: 15px;
 }
-
-
+.left-side{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 /*desktop breakpoint*/
 @media(min-width:1024px){
   .container-flex > .left-side{
-    background:#f5d55f;
+    background:#fff;
     order : -1;
-    width : calc(100% / 4);
+    width :calc((100% / 4) - 40px);
   } 
  .container-flex > .right-side{
   background:#3637a1;

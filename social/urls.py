@@ -11,4 +11,7 @@ urlpatterns = [
     path("profile/<int:pk>" , views.profile , name="profile"),
     path("login/" , views.login_user , name="login"),
     path("logout/" , views.logout_user , name="logout"),
+    path('register/', views.register_view, name='register'),
+    path('edit_user/', views.edit_user, name='edit_user'),
+    #path('login_or_register/<str:action>/', views.handle_login_or_register, name='handle_login_or_register'),
 ]
