@@ -1,5 +1,72 @@
-li {
-    background-color: green;
-    
-  }
+* {
+  box-sizing:border-box;
+  border: 0;
+  margin: 5px;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 
+}
+
+.pagina{
+  position: relative;
+  height:15rem;
+}
+
+.mensagem-geral{
+  border-top: 2px solid #cfc1c1;
+  border-bottom: 2px solid #cfc1c1;
+
+}
+
+.container-flex{
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.card-left{
+  margin-left:12%
+}
+
+.imagem{
+  width:8rem;
+  position:absolute;
+  bottom: 0;
+  left: 0.6rem;
+  z-index: 1; 
+}
+
+.theme-back{
+  height:12rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin:0px;
+
+}
+.tema{
+  object-fit: cover;
+  margin: 0px;
+}
+.edit-profile{
+  position: absolute;
+  right:0px;
+}
+
+
+
+/*desktop breakpoint*/
+@media(min-width:1024px){
+  .container-flex > .left-side{
+    background:#f5d55f;
+    order : -1;
+    width : calc(100% / 4);
+  } 
+ .container-flex > .right-side{
+  background:#3637a1;
+  width:calc((100% / 4) - 40px);
+ }
+ .container-flex > .main-content{
+  width:calc(100% / 2);
+  background:#a74141;
+ }
+}
