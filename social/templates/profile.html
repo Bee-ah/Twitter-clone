@@ -2,42 +2,57 @@
 {% load static %}
 {% block content %}
 {% if profile %}
-<div class="container-flex">
+<div class="container-flex mt-3" style="height:100vh;">
+  <!--LEFT-->
 <div class="left-side">
+<!--FOLLOWS-->
+    <p style="font-weight: 700;font-size:1rem;">Follows</p><br/>
+    {% for follower in followers %}
+    <div class="card-image mb-4">
+     
+          <div class="follows-image">
+            <div class="circle circle-2">
+              {% if follower.profile_image %}
+              <img src="{{follower.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
+              {% else %}
+              <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
+              {% endif %}
+            </div>
 
-    <strong>Follows</strong><br/>
-    {% for following in profile.follows.all %}
-    <div class="card mb-3 card-left w-75">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle" alt="Profile Pic">
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <a href = "{% url 'profile' following.user.id %}">
-                @{{following}}
+    
+            <div class="card-body-follower">
+              <p style="margin-bottom: 0px;">{{follower.user.username}}</p>
+              <a href = "{% url 'profile' follower.user.id %}">
+                @{{follower}}
             </a><br/>
             </div>
-          </div>
-        </div>
+      
+
       </div>
     {% endfor %}
-    
+    <!--END FOLLOWS-->
+
+    <!--FOLLOWED BY-->
     <strong>Followed By</strong><br/>
     {% for following in profile.followed_by.all %}
-    <div class="card mb-3 w-75 card-left">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle" alt="Profile Pic">
+    <div class="card-image mb-4">
+        <div class="follows-image">
+          <div class="circle circle-2">
+            {% if following.profile_image %}
+            <img src="{{following.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
+            {% else %}
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem " alt="Profile Pic" style="background-color: #1ba3f3;">
+          {% endif %}
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
+        </div>
+            <div class="card-body-follower">
+              <p style="margin-bottom: 0px;">{{following.user.username}}</p>
               <a href = "{% url 'profile' following.user.id %}">
                 @{{following}}
             </a><br/>
             </div>
-          </div>
-        </div>
+        
       </div>
     {% endfor %}
     {% if request.user != profile.user %}
@@ -50,37 +65,88 @@
         {% endif %}
     </form>
     {% endif %} 
+<!--FIM DE FOLLOWED BY-->
+</div>   
+<!--FIM DE LEFT-->
 
-</div>    
-
+<!--MAIN-->
 <div class="main-content">
     <div class="pagina">
-    <div class="theme-back">  
+    <div class="theme-back"> 
+    {% if profile.background_image %}
+    <img src = "{{profile.background_image.url}}" class="img-fluid tema" alt="theme">
+    {% else %}
     <img src = "{% static 'images/theme.jpg' %}" class="img-fluid tema" alt="theme">
+    {% endif %}  
+  </div>
+  <div class="image-position">
+    <div class="circle">
+      {% if profile.profile_image %}
+      <img src="{{profile.profile_image.url}}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+      {% else %}
+      <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" ">
+      {% endif %}
     </div>
-    <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
-    <button type="button" class="btn btn-primary btn-sm edit-profile">Edit Profile</button>  
+  </div>
+  
+    {% if request.user.id == profile.user.id %}
+    <a href="{% url 'edit_user' %}" class="btn btn-sm edit-profile btn-outline-primary rounded-pill">Edit Profile</a>
+    {% endif %}
+ 
+    
   </div>  
-  <h4>{{profile.user.username}}</h4>
+  <div class="user-info" style="padding:2rem;">
+    <div class="nome" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+      <h5 style="font-weight:600; margin-bottom: 0px;">{{profile.user.username}}</h4>
+        <small class="text-muted text-lowercase d-inline ">
+            @{{profile.user.username}} 
+        </small><br/>
+    </div>
+    <p>Descrição</p>
+    <p>{{ profile.follows.count }} Following</p>
+    <p>{{ profile.followed_by.count }} Followers</p>
+  </div>
+  
+ 
+  <!--TWEETS-->
   {% if mensagens %}
   {% for mensagem in mensagens %}
-  <div class="mensagem-geral">
+  <div class="mensagem-geral ">
+
+  <div class="tweet-img-position ">
+    <div class="circle circle-2">
+      {% if profile.profile_image %}
+  <img src="{{ profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
+  {% else %}
+  <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
+  {% endif %}
+    </div>
+  
+  </div>  
+  <div class="text-position ">
   <p class="fw-bold d-inline">{{mensagem.user.username}}</p>
   <small class="text-muted text-lowercase d-inline ">
     @{{mensagem.user.username}}  {{mensagem.created_at}}
   </small><br/>
   {{mensagem.body}}
   <br/><br/>
+</div>
+
   </div>
   {% endfor %}
   {% endif %}
-
+<!--FIM DE TWEET-->
   </div>
+
+<!--FIM DA MAIN-->
 
 <div class="right-side">
     <p>Teste</p>
+
+    {% if request.user.id == profile.user.id %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tweet</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {% endif %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
