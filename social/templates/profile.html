@@ -2,10 +2,13 @@
 {% load static %}
 {% block content %}
 {% if profile %}
-<div class="container-flex mt-3" style="height:100vh;">
+<div class="container-flex" style="height:100vh;">
   <!--LEFT-->
-<div class="left-side">
+  <!--
+<div class="left-side"> -->
 <!--FOLLOWS-->
+
+<!--
     <p style="font-weight: 700;font-size:1rem;">Follows</p><br/>
     {% for follower in followers %}
     <div class="card-image mb-4">
@@ -31,9 +34,12 @@
 
       </div>
     {% endfor %}
+
+    -->
     <!--END FOLLOWS-->
 
     <!--FOLLOWED BY-->
+    <!--
     <strong>Followed By</strong><br/>
     {% for following in profile.followed_by.all %}
     <div class="card-image mb-4">
@@ -57,20 +63,38 @@
     {% endfor %}
     {% if request.user != profile.user %}
     <form method='post'>
-        {% csrf_token %} <!--security-->
+    -->  
+    <!-- 
+        {% csrf_token %}--> <!--security-->
+        <!--
         {% if profile in user.profile.follows.all %}
         <button type="submit" class="btn btn-outline-primary" name="follow" value="unfollow">Unfollow</button>
         {% else %}
         <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
         {% endif %}
     </form>
-    {% endif %} 
+    {% endif %}  -->
 <!--FIM DE FOLLOWED BY-->
-</div>   
+<!-- 
+</div>   -->
 <!--FIM DE LEFT-->
+
+
+
 
 <!--MAIN-->
 <div class="main-content">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-1 text-center">
+        <a href="{% url 'home' %}"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i></a>
+      </div>
+      <div class="col-2">
+        <p class="mb-0">{{profile.user.username}}</p>
+        <p class="mb-0">{{profile.user.message.count}} Tweets</p>
+      </div>
+    </div>
+  </div>
     <div class="pagina">
     <div class="theme-back"> 
     {% if profile.background_image %}
@@ -84,7 +108,7 @@
       {% if profile.profile_image %}
       <img src="{{profile.profile_image.url}}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
       {% else %}
-      <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" ">
+      <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
       {% endif %}
     </div>
   </div>
@@ -118,7 +142,7 @@
       {% if profile.profile_image %}
   <img src="{{ profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
   {% else %}
-  <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
+  <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
   {% endif %}
     </div>
   
@@ -129,7 +153,20 @@
     @{{mensagem.user.username}}  {{mensagem.created_at}}
   </small><br/>
   {{mensagem.body}}
-  <br/><br/>
+  <div class="tweet-foot">
+    <small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
+        {{mensagem.number_likes}}
+        {% if user in mensagem.likes.all %}
+        <a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
+          <i class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
+      </a>
+  {% else %}
+      <a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
+          <i class="fa-regular fa-heart" style="color: #687684;"></i>
+      </a>
+        {% endif %}
+    </small>
+</div>
 </div>
 
   </div>
@@ -142,6 +179,12 @@
 
 <div class="right-side">
     <p>Teste</p>
+    <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form> 
+
+
 
     {% if request.user.id == profile.user.id %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tweet</button>

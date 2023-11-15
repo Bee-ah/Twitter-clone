@@ -1,6 +1,6 @@
 from django import views
 from django.http import JsonResponse
-from django.shortcuts import render , redirect
+from django.shortcuts import get_object_or_404, render , redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate , login , logout
 from django.contrib.auth.models import User
@@ -112,3 +112,12 @@ def edit_user(request):
     else:
         messages.success(request, ("You Must Be Logged In To View That Page..."))
         return redirect('home')
+
+def twitter_like(request , pk):
+    if request.user.is_authenticated:
+        mensagem = get_object_or_404(Message, id=pk)
+        if mensagem.likes.filter(id=request.user.id):
+            mensagem.likes.remove(request.user)
+        else:
+            mensagem.likes.add(request.user)
+        return redirect(request.META.get("HTTP_REFERER"))

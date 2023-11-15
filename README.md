@@ -1,5 +1,22 @@
 # Twitter-clone
 
+## To do:
+- Arrumar layout. Dificuldade :star::star:
+Descrição:
+    Arrumar Html e css, de forma a ficar mais parecido com o Twitter. Há uma extensão PixelPerfect no chrome que tem como colocar uma imagem abaixo da aplicação como referência.Estou me baseando na seguinte imagem do figma: [Flex Grid](https://www.figma.com/community/file/1013470200889674140)
+- Deixar o site responsivo , para desktop , tablet e celular. Dificuldade: :star::star: 
+- Incorporar Ajax. Dificuldade: :star::star::star::star: 
+Descrição:
+    Para não precisar recarregar a página toda vez que executar a função de login, registro , tweet e demais, basta adicionar Ajax na pasta static->js.
+- Adicionar a funcionalidade de responder a tweets. Dificuldade: :star::star::star::star:
+- Adicionar paginação. Dificuldade: :star::star::star:
+Descrição:
+    As mensagens em home e a lista de profile possuem limite por página. Fazer uso de django-rest-framework ou a própria biblioteca do Django.
+- Usuários podem adicionar imagem aos tweets. Dificuldade: :star::star::star::star::star:
+    O problema é salvar as imagens.
+
+
+
 manage.py : 
 It’s the tool through which you initiate the development server, create applications, run migrations, and more. manage.py is the conductor's baton, guiding your project's activities.
 

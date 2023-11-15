@@ -13,7 +13,7 @@ class MessageForm(forms.ModelForm):
     body = forms.CharField(required=True , 
                            widget=forms.widgets.Textarea(
                                attrs={
-                                   "placeholder":"Enter your message",
+                                   "placeholder":"What's happenning?",
                                    "class":"form-control",
                                }
                            ),
@@ -22,4 +22,4 @@ class MessageForm(forms.ModelForm):
     
     class Meta:
         model = Message
-        exclude = ("user" , )    
+        exclude = ("user" ,"likes" ,  )    

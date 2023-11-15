@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="{% static 'social/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'basic/style.css' %}">
     <script src="{% static 'social/js/bootstrap.min.js' %}"></script>  
 
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid principal">
     {% include 'navbar.html' %}
-        <div class="m-0">
-
+        <div class="conteudo">
         {% if messages %}
             {% for message in messages %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
