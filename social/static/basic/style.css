@@ -72,8 +72,8 @@ li{
 
 .image-position{
   position: absolute;
-  bottom: -15px;
-  left: 0.6rem;
+  bottom: -25px;
+  left: 1rem;
   z-index: 1;
 }
 
@@ -84,8 +84,8 @@ li{
 
 
 .circle {
-  width: 8rem;  
-  height: 8rem;
+  width: 7rem;  
+  height: 7rem;
   border-radius: 50%;  
   overflow: hidden;  
   border: 3px solid #fff;
@@ -106,7 +106,7 @@ li{
 }
 
 .theme-back{
-  height:12rem;
+  height:13.5rem;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -165,5 +165,7 @@ li{
  .container-flex > .main-content{
   width:70%;
   background:#a74141;
+  border: solid #D8D8D8;
+  border-width: 0px 2px 2px 2px;
  }
 }
