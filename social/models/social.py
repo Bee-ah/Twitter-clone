@@ -31,6 +31,9 @@ class Profile(models.Model):
     date = models.DateTimeField(User , auto_now=True)
     profile_image = models.ImageField(null = True ,  blank=True , upload_to = "images/profile/")
     background_image = models.ImageField(null = True , blank = True , upload_to = "images/background/")
+    profile_bio =  models.CharField(null=True , blank=True , max_length=400)
+    profile_location= models.CharField(null=True , blank=True , max_length=30)
+    profile_website = models.CharField(null=True , blank=True ,max_length=100)
     def __str__(self):
         return self.user.username
 

@@ -89,9 +89,9 @@
       <div class="col-1 text-center">
         <a href="{% url 'home' %}"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i></a>
       </div>
-      <div class="col-2">
-        <p class="mb-0">{{profile.user.username}}</p>
-        <p class="mb-0">{{profile.user.message.count}} Tweets</p>
+      <div class="col-2 p-2 d-flex flex-column">
+        <p class="mb-0" style="font-weight: 700;">{{profile.user.username}}</p>
+        <small class="mb-0"style="color:rgba(0,0,0,.55);">{{profile.user.message.count}} Tweets</small>
       </div>
     </div>
   </div>
@@ -126,7 +126,15 @@
             @{{profile.user.username}} 
         </small><br/>
     </div>
-    <p>Descrição</p>
+    {% if profile.profile_bio %}
+    <p>{{profile.profile_bio}}</p>
+    {% endif %}
+    {% if profile.profile_location %}
+    <p><i class="fa-solid fa-location-dot" style="color: #32bd94;"></i>{{profile.profile_location}}</p>
+    {% endif %}
+    {% if profile.profile_website %}
+    <p><i class="fa-solid fa-link" style="color: #3cc3cd;"></i>{{profile.profile_website}}</p>
+    {% endif %}
     <p>{{ profile.follows.count }} Following</p>
     <p>{{ profile.followed_by.count }} Followers</p>
   </div>
@@ -184,8 +192,82 @@
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form> 
 
+    <div class="caixa">
+    <!--FOLLOWS-->
 
 
+    <p style="font-weight: 700;font-size:1rem;">Follows</p><br/>
+    {% for follower in followers %}
+    <div class="card-image mb-4">
+     
+          <div class="follows-image">
+            <div class="circle circle-2">
+              {% if follower.profile_image %}
+              <img src="{{follower.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
+              {% else %}
+              <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
+              {% endif %}
+            </div>
+
+          </div>
+    
+            <div class="card-body-follower">
+              <p style="margin-bottom: 0px;">{{follower.user.username}}</p>
+              <a href = "{% url 'profile' follower.user.id %}">
+                @{{follower}}
+            </a><br/>
+            </div>
+      
+
+      </div>
+    {% endfor %}
+
+    
+    <!--END FOLLOWS-->
+
+    <!--FOLLOWED BY-->
+    
+    <strong>Followed By</strong><br/>
+    {% for following in profile.followed_by.all %}
+    <div class="card-image mb-4">
+        <div class="follows-image">
+          <div class="circle circle-2">
+            {% if following.profile_image %}
+            <img src="{{following.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
+            {% else %}
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem " alt="Profile Pic" style="background-color: #1ba3f3;">
+          {% endif %}
+          </div>
+        </div>
+            <div class="card-body-follower">
+              <p style="margin-bottom: 0px;">{{following.user.username}}</p>
+              <a href = "{% url 'profile' following.user.id %}">
+                @{{following}}
+            </a><br/>
+            </div>
+        
+      </div>
+    {% endfor %}
+    {% if request.user != profile.user %}
+    <form method='post'>
+     
+     
+        {% csrf_token %} <!--security-->
+        
+        {% if profile in user.profile.follows.all %}
+        <button type="submit" class="btn btn-outline-primary" name="follow" value="unfollow">Unfollow</button>
+        {% else %}
+        <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
+        {% endif %}
+    </form>
+    {% endif %}  
+  </div>
+<!--FIM DE FOLLOWED BY-->
+
+
+
+
+<!-- 
     {% if request.user.id == profile.user.id %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tweet</button>
     {% endif %}
@@ -206,7 +288,7 @@
        </div>
         {% endif %}
     </div>
-  </div>
+  </div>-->
 </div>
 
 </div>
