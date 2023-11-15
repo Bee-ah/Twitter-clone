@@ -10,6 +10,10 @@ class Message(models.Model):
     )
     body = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User , related_name="twitter_likes" , blank=True) 
+
+    def number_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return (f"<p class='fw-bold d-inline'>{self.user}</p>"

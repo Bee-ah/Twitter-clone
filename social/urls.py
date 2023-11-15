@@ -13,5 +13,6 @@ urlpatterns = [
     path("logout/" , views.logout_user , name="logout"),
     path('register/', views.register_view, name='register'),
     path('edit_user/', views.edit_user, name='edit_user'),
+    path('twitter_like/<int:pk>',views.twitter_like , name="twitter_like"),
     #path('login_or_register/<str:action>/', views.handle_login_or_register, name='handle_login_or_register'),
 ]
