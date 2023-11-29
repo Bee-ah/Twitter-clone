@@ -5,6 +5,20 @@ from rest_framework import serializers
 from social.models.social import Profile, User
 from rest_framework.views import status
 
+class ProfileSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, profile):
+        user_data = {
+            'id': profile.user.id,
+            'username': profile.user.username,
+        }
+        return user_data
+    
+    class Meta:
+        model = Profile
+        fields = ['user', 'profile_image' , 'date' , 'profile_bio']
+
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=255)
@@ -19,9 +33,6 @@ class RegisterSerializer(serializers.Serializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-        #Create a new user profile
- #       profile = Profile(user=user)
- #       profile.save()
         return user
     
 class RegisterView(APIView):

@@ -3,84 +3,6 @@
 {% block content %}
 {% if profile %}
 <div class="container-flex" style="height:100vh;">
-  <!--LEFT-->
-  <!--
-<div class="left-side"> -->
-<!--FOLLOWS-->
-
-<!--
-    <p style="font-weight: 700;font-size:1rem;">Follows</p><br/>
-    {% for follower in followers %}
-    <div class="card-image mb-4">
-     
-          <div class="follows-image">
-            <div class="circle circle-2">
-              {% if follower.profile_image %}
-              <img src="{{follower.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
-              {% else %}
-              <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic" style="background-color: #1ba3f3;">
-              {% endif %}
-            </div>
-
-          </div>
-    
-            <div class="card-body-follower">
-              <p style="margin-bottom: 0px;">{{follower.user.username}}</p>
-              <a href = "{% url 'profile' follower.user.id %}">
-                @{{follower}}
-            </a><br/>
-            </div>
-      
-
-      </div>
-    {% endfor %}
-
-    -->
-    <!--END FOLLOWS-->
-
-    <!--FOLLOWED BY-->
-    <!--
-    <strong>Followed By</strong><br/>
-    {% for following in profile.followed_by.all %}
-    <div class="card-image mb-4">
-        <div class="follows-image">
-          <div class="circle circle-2">
-            {% if following.profile_image %}
-            <img src="{{following.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem" alt="Profile Pic">
-            {% else %}
-            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem " alt="Profile Pic" style="background-color: #1ba3f3;">
-          {% endif %}
-          </div>
-        </div>
-            <div class="card-body-follower">
-              <p style="margin-bottom: 0px;">{{following.user.username}}</p>
-              <a href = "{% url 'profile' following.user.id %}">
-                @{{following}}
-            </a><br/>
-            </div>
-        
-      </div>
-    {% endfor %}
-    {% if request.user != profile.user %}
-    <form method='post'>
-    -->  
-    <!-- 
-        {% csrf_token %}--> <!--security-->
-        <!--
-        {% if profile in user.profile.follows.all %}
-        <button type="submit" class="btn btn-outline-primary" name="follow" value="unfollow">Unfollow</button>
-        {% else %}
-        <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
-        {% endif %}
-    </form>
-    {% endif %}  -->
-<!--FIM DE FOLLOWED BY-->
-<!-- 
-</div>   -->
-<!--FIM DE LEFT-->
-
-
-
 
 <!--MAIN-->
 <div class="main-content">
@@ -115,6 +37,21 @@
   
     {% if request.user.id == profile.user.id %}
     <a href="{% url 'edit_user' %}" class="btn btn-sm edit-profile btn-outline-primary rounded-pill">Edit Profile</a>
+    {% elif request.user != profile.user %}
+    <form method='post'>
+     
+     
+        {% csrf_token %} <!--security-->
+        
+        {% if profile in user.profile.follows.all %}
+        <button type="submit" class="btn btn-outline-primary edit-profile rounded-pill btn-sm" name="follow" value="unfollow">Unfollow</button>
+        {% else %}
+        <button type="submit" class="btn btn-outline-primary edit-profile rounded-pill btn-sm" name="follow" value="follow">Follow</button>
+    </form>
+    {% endif %} 
+
+
+
     {% endif %}
  
     
@@ -129,21 +66,28 @@
     {% if profile.profile_bio %}
     <p>{{profile.profile_bio}}</p>
     {% endif %}
+    <div class="info">
     {% if profile.profile_location %}
-    <p><i class="fa-solid fa-location-dot" style="color: #32bd94;"></i>{{profile.profile_location}}</p>
+    <p style="padding-right: 1rem;"><i class="fa-solid fa-location-dot esp" style="color: #32bd94;"></i>{{profile.profile_location}}</p>
     {% endif %}
     {% if profile.profile_website %}
-    <p><i class="fa-solid fa-link" style="color: #3cc3cd;"></i>{{profile.profile_website}}</p>
+    <a href="{{profile.profile_website}}"><i class="fa-solid fa-link esp" style="color: #3cc3cd;"></i>{{domain}}</a>
     {% endif %}
-    <p>{{ profile.follows.count }} Following</p>
-    <p>{{ profile.followed_by.count }} Followers</p>
+    </div>
+    
+    <div class="fol">
+    <p style="padding-right: 1rem;">{{ profile.follows.count }} Following</p>
+    <p >{{ profile.followed_by.count }} Followers</p>
+    </div>
+
+
   </div>
   
  
   <!--TWEETS-->
   {% if mensagens %}
   {% for mensagem in mensagens %}
-  <div class="mensagem-geral ">
+  <div class="mensagem-geral m-0">
 
   <div class="tweet-img-position ">
     <div class="circle circle-2">
@@ -173,9 +117,43 @@
           <i class="fa-regular fa-heart" style="color: #687684;"></i>
       </a>
         {% endif %}
+        {% if request.user.id == profile.user.id %}
+       
+        <a href="#deletemodal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#deletemodal">
+          <i class="fa-solid fa-eraser" style="color: #687684; padding:5px;"></i>
+        </a>
+       
+        {% endif %}
+        <a href="{% url 'message_show' mensagem.id %}" >
+          <i class="fa-regular fa-comment-dots" style="color: #687684; padding:5px;"></i>
+          </a>
     </small>
 </div>
 </div>
+
+<!-- Modal HTML -->
+<div id="deletemodal"class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="deletemodal" aria-hidden="true">
+  <div class="modal-dialog modal-confirm">
+      <div class="modal-content">
+          <div class="modal-header flex-column border-0 text-center">
+
+              <h3 class="modal-title w-100" style="font-weight: 700;">Delete Tweet?</h3>
+              
+          </div>
+          <div class="modal-body">
+              <p style="text-align: center;">This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twitter search results.</p>
+          </div>
+          <div class="modal-footer justify-content-center border-0">
+            
+              <button type="button" class="btn rounded-pill col-3" data-bs-dismiss="modal" style="color:#000000;background-color: #e6ebef;">Cancel</button>
+              <a href="{% url 'delete_message'  mensagem.id %}" class="btn rounded-pill col-3" style="background-color:#ef1c5c;color: #fff;">Delete</a>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
 
   </div>
   {% endfor %}
@@ -186,17 +164,13 @@
 <!--FIM DA MAIN-->
 
 <div class="right-side">
-    <p>Teste</p>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form> 
 
-    <div class="caixa">
+    <div class="caixa container py-3">
     <!--FOLLOWS-->
 
-
-    <p style="font-weight: 700;font-size:1rem;">Follows</p><br/>
+     <div class="followsbox pb-2"> 
+    <p style="font-weight: 700;font-size:1rem;">Follows</p>
+    {% if followers %}
     {% for follower in followers %}
     <div class="card-image mb-4">
      
@@ -217,17 +191,24 @@
                 @{{follower}}
             </a><br/>
             </div>
-      
-
+            {% if request.user.id == profile.user.id %}
+            <div class="followoption" style="align-self: center;">
+              <a  href="{% url 'unfollow' follower.user.id %}" class="btn rounded-pill btn-sm " style=" color:#fff;  background-color: #1ba3f3;" >Unfollow</a>
+            </div>
+{% endif %}
       </div>
     {% endfor %}
-
+    {% else %}
+    <p>None</p>
+    {% endif %}
+  </div> 
     
     <!--END FOLLOWS-->
 
     <!--FOLLOWED BY-->
     
-    <strong>Followed By</strong><br/>
+    <p style="font-weight: 700;font-size:1rem;">Followed By</p>
+    {% if profile.followed_by.all %}
     {% for following in profile.followed_by.all %}
     <div class="card-image mb-4">
         <div class="follows-image">
@@ -245,53 +226,29 @@
                 @{{following}}
             </a><br/>
             </div>
-        
-      </div>
-    {% endfor %}
-    {% if request.user != profile.user %}
-    <form method='post'>
-     
-     
-        {% csrf_token %} <!--security-->
-        
-        {% if profile in user.profile.follows.all %}
-        <button type="submit" class="btn btn-outline-primary" name="follow" value="unfollow">Unfollow</button>
-        {% else %}
-        <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow</button>
+            {% if request.user.id == profile.user.id %}
+            <div class="followoption" style="align-self: center;">
+              {% if following in profile.follows.all %}
+              <a href="{% url 'unfollow' following.user.id %}"  class="btn rounded-pill  btn-sm  " style=" color:#fff;  background-color: #1ba3f3;" >Unfollow</a>
+               {% else %} 
+               <a href="{% url 'follow' following.user.id %}"  class="btn rounded-pill  btn-sm " style=" color:#fff;  background-color: #1ba3f3;" >Follow</a>
+                {% endif %}
+              </div>
         {% endif %}
-    </form>
-    {% endif %}  
+      </div>
+    {% endfor %} 
+    {% else %}
+    <p>None</p>
+    {% endif %}
+
   </div>
 <!--FIM DE FOLLOWED BY-->
 
 
-
-
-<!-- 
-    {% if request.user.id == profile.user.id %}
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tweet</button>
-    {% endif %}
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-        {% if form %}
-        <div class="modal-body"></div>
-        <form method="POST">
-          {% csrf_token %}
-          {{form.as_p}}
-          <button type="submit" class="btn btn-primary" name="form">Send message</button>
-        </form>
-       </div>
-        {% endif %}
-    </div>
-  </div>-->
 </div>
 
+
 </div>
-</div>
+
 {% endif %}
 {% endblock %}

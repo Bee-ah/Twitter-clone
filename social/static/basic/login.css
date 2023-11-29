@@ -1,3 +1,4 @@
+      /* Default size for desktop */
 * {
     box-sizing:border-box;
     border: 0;
@@ -20,8 +21,6 @@
     align-items: center;
     justify-content: center;
   }
-
-      /* Default size for desktop */
  .logo{
   width: 300px;
   height: 300px;
@@ -36,6 +35,10 @@
 }
 .login-right{
   padding:3rem;
+
+}
+.login-right svg{
+  margin-bottom: 3rem;
 }
 h1{
   font-size:3rem;
@@ -50,10 +53,42 @@ h1{
 .erro {
   border-color: #f00;
 }
-/* Media query for smaller screens, e.g., phones */
+
+
+@media(max-width:600px){
+  .cont-img{
+    display:none;
+    visibility: hidden;
+  }
+  .login-right{
+    height:100vh;
+  }
+  .login-right svg{
+    margin-bottom:0px;
+  }
+  .container-right{
+    max-width: 100%;
+    width:100%;
+  }
+  .navbar-nav li a {
+    display: none;
+  }
+
+  .navbar-nav li a i {
+    display: inline;
+  }
+
+}
 @media (max-width: 768px) {
   .logo{
-      width: 100px ; /* Adjust the width to your desired size for phones */
-      height: 100px ; /* Adjust the height accordingly */
+    width: 200px;
+    height: 200px;
   }
+  .modal{
+    padding-right:0px !important;
+  }
+  .modal-backdrop{
+    background-color: #fff;
+  }
+
 }
