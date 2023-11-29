@@ -1,1 +1,1 @@
-from .social_serializer import RegisterSerializer
+from .social_serializer import RegisterSerializer , ProfileSerializer
