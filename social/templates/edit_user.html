@@ -3,16 +3,16 @@
 {% block content %}
 
 <div class="col-md-6 offset-md-3 mt-5">
-<h5 style="font-weight: 800;">Update User</h5>
-<br/>
+	<h5 style="font-weight: 800;">Update User</h5>
+	<br />
 
-<form method="POST" action="" enctype="multipart/form-data" class="edit-user" id="edit-user">
-	{% csrf_token %}
-	{{ profile_form.as_p}}
-<div class="buttonform">
-  	<button type="submit" class="btn rounded-pill col-5 btn-modificado">Update Profile</button>
-</div>
-</form>
+	<form method="POST" action="" enctype="multipart/form-data" class="edit-user" id="edit-user">
+		{% csrf_token %}
+		{{ profile_form.as_p}}
+		<div class="buttonform">
+			<button type="submit" class="btn rounded-pill col-5 btn-modificado">Update Profile</button>
+		</div>
+	</form>
 
 </div>
 
