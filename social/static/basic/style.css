@@ -240,7 +240,7 @@ li{
   }
 }
 
-@media screen and (min-width:992px){
+@media screen and (min-width:801px){
   .navbar .container-fluid, .navbar-expand-lg .navbar-collapse, .navbar-expand-lg .navbar-nav{
     flex-direction:column;
     align-items: flex-start;
@@ -274,7 +274,7 @@ li{
 
 
 /*desktop breakpoint*/
-@media(min-width:1024px){
+@media(min-width:801px){
   .container-flex > .left-side{
     background:#fff;
     order : -1;

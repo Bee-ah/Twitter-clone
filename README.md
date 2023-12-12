@@ -1,14 +1,21 @@
 # Twitter-clone
 
-## Overview
+<br>
+
+![Screenshot of](readme_image.png)
+
+<br>
+
+## :dart: Overview
 Twitter-clone project build in Django which has the main functionalities of social networks. 
 The user can :
-:small_orange_diamond: register/login/logout;
-:small_orange_diamond: create/edit a profile;
-:small_orange_diamond: comment/delete a comment/favorite/reply to a comment;
-:small_orange_diamond: follow and unfollow another user;
+##### :small_orange_diamond: register/login/logout;
+##### :small_orange_diamond: create/edit a profile;
+##### :small_orange_diamond: comment/delete a comment/favorite/reply to a comment;
+##### :small_orange_diamond: follow and unfollow another user;
+<br>
 
-### Prerequisites
+## :loudspeaker: Prerequisites
 
 ```
 - Docker (installation guide: https://docs.docker.com/get-docker/ )
@@ -21,8 +28,9 @@ Optional:
 poetry (installation guide: https://python-poetry.org/docs/#installation )
 python
 ```
+<br>
 
-### Getting Started
+## :dizzy: Getting Started
 Follow these instructions to run this project on your local machine 
 
 1. Clone this project
@@ -56,8 +64,9 @@ docker-compose exec web poetry run python manage.py createsuperuser
 5. Access the application
 The application should be accessible at http://localhost:8001/ 
 
+<br>
 
-#### Review of some django files
+## :speech_balloon: Review of some django files
 
 - manage.py : 
 Tool through which you initiate the development server, create applications, run migrations ...
