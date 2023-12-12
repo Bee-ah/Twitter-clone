@@ -43,6 +43,7 @@
         </form>
         {% endif %}
     </div>
+    {% if mensagens %}
     {% for mensagem in mensagens %}
     <div class="mensagem-geral m-0">
         <div class="tweet-img-position ">
@@ -75,5 +76,8 @@
     </div>
 
     {% endfor %}
+    {% else %}
+    <h5 style="font-weight: 800;">Be the first to post a message!<i class="fa-regular fa-face-kiss-wink-heart" style="color: #ef1c5c;"></i></h5>
+    {% endif %}
 </div>
 {% endblock %}
