@@ -1,5 +1,11 @@
 # Twitter-clone
 
+<br>
+
+![Screenshot of](readme_image.png)
+
+<br>
+
 ## :dart: Overview
 Twitter-clone project build in Django which has the main functionalities of social networks. 
 The user can :
