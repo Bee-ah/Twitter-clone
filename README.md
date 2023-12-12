@@ -3,10 +3,10 @@
 ## Overview
 Twitter-clone project build in Django which has the main functionalities of social networks. 
 The user can :
-:small_orange_diamond: register/login/logout;
-:small_orange_diamond: create/edit a profile;
-:small_orange_diamond: comment/delete a comment/favorite/reply to a comment;
-:small_orange_diamond: follow and unfollow another user;
+##### :small_orange_diamond: register/login/logout;
+##### :small_orange_diamond: create/edit a profile;
+##### :small_orange_diamond: comment/delete a comment/favorite/reply to a comment;
+##### :small_orange_diamond: follow and unfollow another user;
 
 ### Prerequisites
 
