@@ -238,6 +238,11 @@ li{
   .nav-item a{
     padding-left:1rem !important;
   }
+  em-emoji-picker{
+    width: min(80vw, max(300px, 25vw));
+    resize: horizontal;
+    overflow: auto;
+   }
 }
 
 @media screen and (min-width:801px){
@@ -288,5 +293,13 @@ li{
   width:70%;
   border: solid #D8D8D8;
   border-width: 0px 2px 2px 2px;
+ }
+ em-emoji-picker{
+  width: 20vw;
+  resize: horizontal;
+  overflow: auto;
+ }
+ .tweet-post-button .emojiContainer em-emoji-picker{
+  height:300px;  
  }
 }

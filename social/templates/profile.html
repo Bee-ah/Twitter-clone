@@ -102,7 +102,7 @@
         <small class="text-muted text-lowercase d-inline ">
           @{{mensagem.user.username}} {{mensagem.created_at}}
         </small><br />
-        {{mensagem.body}}
+        {{mensagem.body|safe}}
         <div class="tweet-foot">
           <small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
             {{mensagem.number_likes}}
@@ -117,7 +117,7 @@
             {% endif %}
             {% if request.user.id == profile.user.id %}
 
-            <a href="#deletemodal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#deletemodal">
+            <a href="#deletemodal{{ mensagem.id }}" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#deletemodal{{ mensagem.id }}">
               <i class="fa-solid fa-eraser" style="color: #687684; padding:5px;"></i>
             </a>
             {% endif %}
@@ -129,7 +129,7 @@
       </div>
 
       <!-- Modal HTML -->
-      <div id="deletemodal" class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="deletemodal"
+      <div id="deletemodal{{ mensagem.id }}" class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="deletemodal{{ mensagem.id }}"
         aria-hidden="true">
         <div class="modal-dialog modal-confirm">
           <div class="modal-content">

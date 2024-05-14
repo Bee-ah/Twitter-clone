@@ -11,10 +11,12 @@
     <link rel="stylesheet" href="{% static 'basic/style.css' %}">
     <script src="{% static 'social/js/bootstrap.min.js' %}"></script>
 
+
 </head>
 
 <body>
     <div class="container-fluid principal">
+
         {% include 'navbar.html' %}
         <div class="conteudo">
             {% if messages %}
@@ -30,7 +32,9 @@
         </div>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="{% static 'js/listprofile.js' %}"></script>
+    <script src="{% static 'js/emote.js' %}"></script>
     <script src="{% static 'js/formbio.js' %}"></script>
 </body>
 </html>

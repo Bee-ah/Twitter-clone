@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "social",
     "rest_framework",
-    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -39,7 +38,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "twitter_clone.urls"
@@ -109,11 +107,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = ['static/']
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
+DEBUG=True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -128,7 +127,9 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
-print("ALLOWED_HOSTS:", os.environ.get("DJANGO_ALLOWED_HOSTS", ""))
+
+
+
+# Remove any empty strings from the list
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']

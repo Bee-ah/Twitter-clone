@@ -64,12 +64,13 @@
           </div>
           {% if form %}
           <div class="modal-body tweet-post">
-            <form method="POST">
+            <form method="POST" class="nav-form">
               {% csrf_token %}
               {{form.as_p}}
               <div class="tweet-post-button">
                 <button type="submit" name="form" class="btn rounded-pill col-5"
                   style=" color:#fff;  background-color: #1ba3f3; margin-top: 2rem;">Send message</button>
+                <div class="emojiContainer" style="display: none; position:absolute; top:180px;right:-28px;z-index:50"></div>
               </div>
             </form>
 
