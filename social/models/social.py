@@ -15,6 +15,8 @@ class Message(models.Model):
 
     def number_likes(self):
         return self.likes.count()
+    def number_replies(self):
+        return self.replies.count()
 
     def __str__(self):
         return (

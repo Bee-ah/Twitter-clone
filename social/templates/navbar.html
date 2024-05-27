@@ -17,15 +17,15 @@
           <a style="color:#1ba3f3;" class="nav-link nophonee" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item d-flex align-items-center">
-          <a class="nav-link" style="color:#000;" href="{% url 'profiless_list' %}">
+          <a class="nav-link" style="color:#000; cursor: pointer;" hx-get="{% url 'profiless_list' %}"hx-push-url="true" hx-target="#conteudo" hx-swap="innerHTML">
             <i class="fa-solid fa-users" style="color: #000000;"></i></a>
-          <a class="nav-link nophonee" style="color:#000;" href="{% url 'profiless_list' %}">Profiles</a>
+          <a class="nav-link nophonee" style="color:#000; cursor: pointer;" hx-get="{% url 'profiless_list' %}"hx-push-url="true" hx-target="#conteudo" hx-swap="innerHTML">Profiles</a>
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item d-flex align-items-center">
-          <a class="nav-link" style="color:#000;" href="{% url 'profile' request.user.id %}">
+          <a class="nav-link" style="color:#000;cursor:pointer;" hx-post="{% url 'profile' request.user.id %}" hx-push-url="true" hx-target="#conteudo" hx-swap="innerHTML" >
             <i class="fa-regular fa-user" style="color: #000000;"></i></a>
-          <a class="nav-link nophonee" style="color:#000;" href="{% url 'profile' request.user.id %}">My Profile</a>
+          <a class="nav-link nophonee" style="color:#000;cursor:pointer;" hx-post="{% url 'profile' request.user.id %}" hx-push-url="true" hx-target="#conteudo" hx-swap="innerHTML" >My Profile</a>
         </li>
         <li class="nav-item d-flex align-items-center">
           <a class="nav-link" style="color:#000;" href="{% url 'logout' %}">

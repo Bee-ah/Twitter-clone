@@ -6,7 +6,51 @@
 	<div class="inicio">
 		<h5 style="font-weight: 800;">Reply</h5>
 	</div>
-	<div class="inicio2" style="display:flex; flex-direction: row;padding:1.3rem; border-bottom: solid #D8D8D8 1.2rem;">
+
+<!--Mensagem Principal-->
+<div class="mensagem-geral m-0" style="border:#1ba3f3;">
+
+	<div class="tweet-img-position ">
+		<div class="circle circle-2">
+			{% if mensagem.user.profile.profile_image %}
+			<img src="{{ mensagem.user.profile.profile_image.url }}" alt="{{mensagem.user.username}}"
+				class="imagem">
+			{% else %}
+			<img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+			{% endif %}
+		</div>
+
+	</div>
+	<div class="text-position ">
+		<p class="fw-bold d-inline">{{mensagem.user.username}}</p>
+		<small class="text-muted text-lowercase d-inline ">
+			@{{mensagem.user.username}} {{mensagem.created_at}}
+		</small><br />
+		{{mensagem.body}}
+		<div class="tweet-foot">
+			<small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
+				<span id="like-count-{{ mensagem.id }}">{{ mensagem.number_likes }}</span>
+				<a href="{% url 'twitter_like' mensagem.id %}" 
+				hx-get="{% url 'twitter_like' mensagem.id %}" 
+				hx-trigger="click" 
+				hx-target="this"
+				hx-swap="none"
+				hx-on="htmx:afterOnLoad: updateLikeIcon(event, {{ mensagem.id }})"
+				style="padding: 5px;">
+				{% if user in mensagem.likes.all %}
+				<i id="like-icon-{{ mensagem.id }}" class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
+		 {% else %}
+		 <i id="like-icon-{{ mensagem.id }}" class="fa-regular fa-heart" style="color: #687684;"></i>
+		 {% endif %}
+				</a>
+				<span style="padding-left: 5px;">{{ mensagem.number_replies }} replies</span>
+			</small>
+		</div>
+	</div>
+
+</div>
+
+	<div class="inicio2" style="display:flex; flex-direction: row;padding:1.3rem; border-top: solid #D8D8D8 1.2rem;background-color: #0084b41c;">
 		{% if user.is_authenticated %}
 		<div class="tweet-img-position ">
 			<div class="circle circle-2">
@@ -22,50 +66,16 @@
 		<form method="POST" class="custom-form" style="display:flex;flex-direction: column;width: 100%;">
 			{% csrf_token %}
 			{{ reply_form.as_p }}
-			<button type="submit" class="btn rounded-pill"
-				style="color:#fff; background-color:#1ba3f3;align-self: flex-end;">Reply</button>
+			<div style="align-self: flex-end; position: relative;">
+                <button type="submit" class="btn rounded-pill"
+                style="color:#fff; background-color:#1ba3f3;">Reply</button>
+            <div class="emojiPickerContainer" style="display: none; position:absolute; top:-10px;right:-12px;z-index:50"></div>
+            </div>
 		</form>
 
 	</div>
 
-	<div class="mensagem-geral m-0">
-
-		<div class="tweet-img-position ">
-			<div class="circle circle-2">
-				{% if mensagem.user.profile.profile_image %}
-				<img src="{{ mensagem.user.profile.profile_image.url }}" alt="{{mensagem.user.username}}"
-					class="imagem">
-				{% else %}
-				<img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
-				{% endif %}
-			</div>
-
-		</div>
-		<div class="text-position ">
-			<p class="fw-bold d-inline">{{mensagem.user.username}}</p>
-			<small class="text-muted text-lowercase d-inline ">
-				@{{mensagem.user.username}} {{mensagem.created_at}}
-			</small><br />
-			{{mensagem.body}}
-			<div class="tweet-foot">
-				<small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
-					{{mensagem.number_likes}}
-					{% if user in mensagem.likes.all %}
-					<a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
-						<i class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
-					</a>
-					{% else %}
-					<a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
-						<i class="fa-regular fa-heart" style="color: #687684;"></i>
-					</a>
-					{% endif %}
-
-				</small>
-			</div>
-		</div>
-
-	</div>
-
+<!--mensagens resposta-->
 	{% for reply in mensagem.replies.all %}
 	<div class="mensagem-geral m-0">
 		<div class="tweet-img-position ">
@@ -82,16 +92,26 @@
 			{{reply|safe}}
 			<div class="tweet-foot">
 				<small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
-					{{reply.number_likes}}
+					<span id="like-count-{{ reply.id }}">{{ reply.number_likes }}</span>
+					<a href="{% url 'twitter_like' reply.id %}" 
+					hx-get="{% url 'twitter_like' reply.id %}" 
+					hx-trigger="click" 
+					hx-target="this"
+					hx-swap="none"
+					hx-on="htmx:afterOnLoad: updateLikeIcon(event, {{ reply.id }})"
+					style="padding: 5px;">
 					{% if user in reply.likes.all %}
-					<a href="{% url 'twitter_like' reply.id %}" style="padding: 5px;">
-						<i class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
-					</a>
-					{% else %}
-					<a href="{% url 'twitter_like' reply.id %}" style="padding: 5px;">
-						<i class="fa-regular fa-heart" style="color: #687684;"></i>
-					</a>
-					{% endif %}
+					<i id="like-icon-{{ reply.id }}" class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
+             {% else %}
+             <i id="like-icon-{{ reply.id }}" class="fa-regular fa-heart" style="color: #687684;"></i>
+             {% endif %}
+         </a>
+
+		 <span id="reply-count-{{ reply.id }}" style="padding-left: 5px;">{{ reply.number_replies }}</span>
+		 <a href="{% url 'message_show' reply.id %}">
+		   <i class="fa-regular fa-comment-dots" style="color: #687684; padding:5px;"></i>
+		 </a>
+		 
 				</small>
 			</div>
 		</div>

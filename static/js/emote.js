@@ -5,7 +5,7 @@ const addEmoji = (e , container_name) => {
     const textarea = document.querySelector("."+container_name+" textarea");
     console.log("."+container_name+" textarea");
     textarea.value += emoji;
-
+  
 };
 function createEmojiPicker(container , container_name) {
 

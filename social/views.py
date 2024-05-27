@@ -1,12 +1,17 @@
 from urllib.parse import urlparse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.shortcuts import render
+from django.core.paginator import Paginator
 from social.serializers.social_serializer import RegisterSerializer
 from .models import Profile, Message
 from .forms import MessageForm, ProfileEdit
-from django.shortcuts import render
+
+
 
 #gets the domain of the link edit user
 def get_domain_from_url(url):
@@ -15,7 +20,10 @@ def get_domain_from_url(url):
 
 #render the list of profile page
 def profiless_list(request):
-    return render(request, "profiless.html")
+    if request.htmx:
+        return render(request, "profiless_content.html")
+    else:
+        return render(request, "profiless.html")
 
 #register user
 def register_view(request):
@@ -51,8 +59,16 @@ def home(request):
                 mensagem.save()
                 messages.success(request, ("Your message was sent"))
                 return redirect("home")
-        mensagens = Message.objects.all().order_by("-created_at")
-        return render(request, "home.html", {"mensagens": mensagens, "form": form})
+        mensagens_list = Message.objects.all().order_by("-created_at")
+        paginator = Paginator(mensagens_list, 10)
+        page_number = request.GET.get('page') or 1
+        mensagens = paginator.get_page(page_number)
+
+        if request.htmx:
+            return render(request, "messages.html", {"mensagens": mensagens.object_list,"page_obj":mensagens, "form": form})
+        else:
+            return render(request, "home.html", {"mensagens": mensagens.object_list,"page_obj":mensagens, "form": form})
+        
     else:
         mensagens = Message.objects.all().order_by("-created_at")
         return render(request, "home.html", {"mensagens": mensagens})
@@ -116,7 +132,20 @@ def profile(request, pk):
                     mensagem.save()
                     messages.success(request, ("Your message was sent"))
                     return redirect("profile", pk=pk)
-        return render(
+        if request.htmx:
+            return render(
+            request,
+            "profile_content.html",
+            {
+                "profile": profile,
+                "mensagens": mensagens,
+                "form": form,
+                "followers": followers,
+                "domain": domain,
+            },
+        )
+        else:
+            return render(
             request,
             "profile.html",
             {
@@ -127,6 +156,7 @@ def profile(request, pk):
                 "domain": domain,
             },
         )
+        
     else:
         messages.success(request, ("You must be logged in to view this page"))
         return redirect("home")
@@ -141,10 +171,10 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, ("You have been logged in"))
-            return redirect("home")
+            return JsonResponse({'success': True, 'redirect_url': reverse('home')})
         else:
             error_message = "Invalid login credentials. Please try again."
-        return render(request, "login.html", {"error_message": error_message})
+            return JsonResponse({'success': False, 'error_message': error_message})
     else:
         return render(request, "login.html", {})
 
@@ -176,9 +206,11 @@ def twitter_like(request, pk):
         mensagem = get_object_or_404(Message, id=pk)
         if mensagem.likes.filter(id=request.user.id):
             mensagem.likes.remove(request.user)
+            is_liked = False
         else:
             mensagem.likes.add(request.user)
-        return redirect(request.META.get("HTTP_REFERER"))
+            is_liked = True
+        return JsonResponse({'is_liked': is_liked , 'like_count':mensagem.likes.count()})
 
 #show message and reply
 def message_show(request, pk):
