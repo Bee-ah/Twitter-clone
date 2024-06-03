@@ -1,5 +1,6 @@
+import io
 from urllib.parse import urlparse
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse , FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -10,6 +11,12 @@ from django.core.paginator import Paginator
 from social.serializers.social_serializer import RegisterSerializer
 from .models import Profile, Message
 from .forms import MessageForm, ProfileEdit
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from io import BytesIO
+from reportlab.pdfbase.ttfonts import TTFont
+
 
 
 
@@ -274,3 +281,54 @@ def delete_message(request, pk):
     else:
         messages.success(request, ("Please log in to do this action"))
         return redirect(request.META.get("HTTP_REFERER"))
+
+#para gerar pdf
+def generate_pdf(request , pk):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=pk)
+        comments = Message.objects.filter(user_id=pk).order_by("-created_at")
+        response = HttpResponse(content_type='data/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{user.username}_comments.pdf"'
+         # Cria o PDF
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer, pagesize=letter)
+       
+        width, height = letter
+        font_path = 'static/fonts/Symbola.otf'
+        pdfmetrics.registerFont(TTFont('Symbola', font_path))
+
+         
+        p.setStrokeColorRGB(0, 0, 1)  
+
+      
+        p.rect(5, 5, width-10, height-10, stroke=True, fill=False)
+
+        # Define a fonte padrão para o título
+        p.setFont("Helvetica-Bold", 14)
+        p.drawString(100, height - 50, f"Messages from {user.username}")
+
+        # Espaçamento inicial
+        y = height - 80
+
+        # Define a fonte para os comentários, incluindo emojis
+        p.setFont("Symbola", 12)
+        for comment in comments:
+            if y < 50:  # Verifica se há espaço suficiente na página atual
+                p.showPage()
+                y = height - 50
+                p.setFont("Symbola", 12)
+
+            p.drawString(100, y, f"{comment.created_at:%Y-%m-%d %H:%M}: {comment.body}")
+            y -= 20  # Espaçamento entre os comentários
+        
+        p.setFont("Helvetica", 10)
+        p.drawString(100, 30, "© Twitter-Clone LTDA 2024")  
+
+        p.showPage()
+        p.save()
+         
+        pdf_data = buffer.getvalue()
+        buffer.close()
+
+        response.write(pdf_data)
+        return response

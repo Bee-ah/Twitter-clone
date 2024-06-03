@@ -35,7 +35,10 @@
       </div>
 
       {% if request.user.id == profile.user.id %}
-      <a href="{% url 'edit_user' %}" class="btn btn-sm edit-profile btn-outline-primary rounded-pill">Edit Profile</a>
+      <div class="edit-profile" style="display:flex;flex-direction: row;">
+        <a href="{% url 'generate_pdf' request.user.id %}" class="btn btn-sm btn-outline-primary rounded-pill" style="margin-right:5px;">Data</a>
+      <a href="{% url 'edit_user' %}" class="btn btn-sm btn-outline-primary rounded-pill">Edit Profile</a>
+    </div>
       {% elif request.user != profile.user %}
       <form method='post'>
 

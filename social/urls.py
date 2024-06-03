@@ -18,4 +18,5 @@ urlpatterns = [
     path("profiless/", views.profiless_list, name="profiless_list"),#just to practice serializer and viewset
     path("api/profiless/", ProfileViewSet.as_view({"get": "list"}), name="profiless-list"),#just to practice serializer and viewset
     path("message_show/<int:pk>", views.message_show, name="message_show"),
+    path("data/<int:pk>" , views.generate_pdf , name="generate_pdf"),
 ]
