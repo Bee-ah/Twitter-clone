@@ -5,32 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Twitter-Clone</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico'  %}">
     <link rel="stylesheet" type="text/css" href="{% static 'social/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'basic/style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
     <script src="{% static 'social/js/bootstrap.min.js' %}"></script>
+
 
 </head>
 
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="container-fluid principal">
+
         {% include 'navbar.html' %}
-        <div class="conteudo">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{message}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
+        <div class="conteudo" id="conteudo">
             {% block content %}
             {% endblock %}
         </div>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="{% static 'js/listprofile.js' %}"></script>
+    <script src="{% static 'js/emote.js' %}"></script>
+    <script src="{% static 'js/update_likes.js' %}"></script>    
     <script src="{% static 'js/formbio.js' %}"></script>
 </body>
 </html>

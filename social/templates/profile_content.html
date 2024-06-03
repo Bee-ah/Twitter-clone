@@ -1,0 +1,264 @@
+{% load static %}
+{% block content %}
+{% if profile %}
+<div class="container-flex" style="height:100vh;">
+
+  <!--MAIN-->
+  <div class="main-content">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-1 text-center">
+          <a href="{% url 'home' %}"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i></a>
+        </div>
+        <div class="col-2 p-2 d-flex flex-column">
+          <p class="mb-0" style="font-weight: 700;">{{profile.user.username}}</p>
+          <small class="mb-0" style="color:rgba(0,0,0,.55);">{{profile.user.message.count}} Tweets</small>
+        </div>
+      </div>
+    </div>
+    <div class="pagina">
+      <div class="theme-back">
+        {% if profile.background_image %}
+        <img src="{{profile.background_image.url}}" class="img-fluid tema" alt="theme">
+        {% else %}
+        <img src="{% static 'images/theme.jpg' %}" class="img-fluid tema" alt="theme">
+        {% endif %}
+      </div>
+      <div class="image-position">
+        <div class="circle">
+          {% if profile.profile_image %}
+          <img src="{{profile.profile_image.url}}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+          {% else %}
+          <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+          {% endif %}
+        </div>
+      </div>
+
+      {% if request.user.id == profile.user.id %}
+      <div class="edit-profile" style="display:flex;flex-direction: row;">
+        <a href="{% url 'generate_pdf' request.user.id %}" class="btn btn-sm btn-outline-primary rounded-pill" style="margin-right:5px;">Data</a>
+      <a href="{% url 'edit_user' %}" class="btn btn-sm btn-outline-primary rounded-pill">Edit Profile</a>
+    </div>
+      {% elif request.user != profile.user %}
+      <form method='post'>
+
+
+        {% csrf_token %} <!--security-->
+
+        {% if profile in user.profile.follows.all %}
+        <button type="submit" class="btn btn-outline-primary edit-profile rounded-pill btn-sm" name="follow"
+          value="unfollow">Unfollow</button>
+        {% else %}
+        <button type="submit" class="btn btn-outline-primary edit-profile rounded-pill btn-sm" name="follow"
+          value="follow">Follow</button>
+      </form>
+      {% endif %}
+
+      {% endif %}
+
+
+    </div>
+    <div class="user-info" style="padding:2rem;">
+      <div class="nome" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+        <h5 style="font-weight:600; margin-bottom: 0px;">{{profile.user.username}}</h4>
+          <small class="text-muted text-lowercase d-inline ">
+            @{{profile.user.username}}
+          </small><br />
+      </div>
+      {% if profile.profile_bio %}
+      <p>{{profile.profile_bio}}</p>
+      {% endif %}
+      <div class="info">
+        {% if profile.profile_location %}
+        <p style="padding-right: 1rem;"><i class="fa-solid fa-location-dot esp"
+            style="color: #32bd94;"></i>{{profile.profile_location}}</p>
+        {% endif %}
+        {% if profile.profile_website %}
+        <a href="{{profile.profile_website}}"><i class="fa-solid fa-link esp" style="color: #3cc3cd;"></i>{{domain}}</a>
+        {% endif %}
+      </div>
+
+      <div class="fol">
+        <p style="padding-right: 1rem;">{{ profile.follows.count }} Following</p>
+        <p>{{ profile.followed_by.count }} Followers</p>
+      </div>
+      
+    </div>
+
+    <!--TWEETS-->
+    {% if mensagens %}
+    {% for mensagem in mensagens %}
+    <div class="mensagem-geral m-0">
+
+      <div class="tweet-img-position ">
+        <div class="circle circle-2">
+          {% if profile.profile_image %}
+          <img src="{{ profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
+          {% else %}
+          <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+          {% endif %}
+        </div>
+      </div>
+      <div class="text-position ">
+        <p class="fw-bold d-inline">{{mensagem.user.username}}</p>
+        <small class="text-muted text-lowercase d-inline ">
+          @{{mensagem.user.username}} {{mensagem.created_at}}
+        </small><br />
+        {{mensagem.body|safe}}
+        <div class="tweet-foot">
+          <small class="text-muted" style="display:flex;flex-direction:row;align-items: center;" id="like-container-{{mensagem.id}}">
+            <span id="like-count-{{ mensagem.id }}">{{ mensagem.number_likes }}</span>
+            <a href="{% url 'twitter_like' mensagem.id %}" 
+            hx-get="{% url 'twitter_like' mensagem.id %}" 
+            hx-trigger="click" 
+            hx-target="this"
+            hx-swap="none"
+            hx-on="htmx:afterOnLoad: updateLikeIcon(event, {{ mensagem.id }})"
+            style="padding: 5px;">
+             {% if user in mensagem.likes.all %}
+             <i id="like-icon-{{ mensagem.id }}" class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
+             {% else %}
+             <i id="like-icon-{{ mensagem.id }}" class="fa-regular fa-heart" style="color: #687684;"></i>
+             {% endif %}
+         </a>
+            <span id="reply-count-{{ mensagem.id }}" style="padding-left: 5px;">{{ mensagem.number_replies }}</span>
+            <a href="{% url 'message_show' mensagem.id %}">
+              <i class="fa-regular fa-comment-dots" style="color: #687684; padding:5px;"></i>
+            </a>
+            {% if request.user.id == profile.user.id %}
+
+            <a href="#deletemodal{{ mensagem.id }}" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#deletemodal{{ mensagem.id }}">
+              <i class="fa-solid fa-eraser" style="color: #687684; padding:5px;"></i>
+            </a>
+            {% endif %}
+            {% if mensagem.parent_message %}
+            <a style="padding-left: 5px;" href="{% url 'message_show' mensagem.parent_message.id %}" id="historico" data-bs-toggle="tooltip" data-bs-html="true" title="reply to {{mensagem.parent_message.user.username}}'s message">
+               <i class="fa-solid fa-clock-rotate-left" style="color: #687684;"></i>
+            </a>
+            {% endif %} 
+          </small>
+        </div>
+      </div>
+
+      <!-- Modal HTML -->
+      <div id="deletemodal{{ mensagem.id }}" class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="deletemodal{{ mensagem.id }}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+          <div class="modal-content">
+            <div class="modal-header flex-column border-0 text-center">
+
+              <h3 class="modal-title w-100" style="font-weight: 700;">Delete Tweet?</h3>
+
+            </div>
+            <div class="modal-body">
+              <p style="text-align: center;">This can't be undone and it will be removed from your profile, the timeline
+                of any accounts that follow you, and from Twitter search results.</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+
+              <button type="button" class="btn rounded-pill col-3" data-bs-dismiss="modal"
+                style="color:#000000;background-color: #e6ebef;">Cancel</button>
+              <a href="{% url 'delete_message'  mensagem.id %}" class="btn rounded-pill col-3"
+                style="background-color:#ef1c5c;color: #fff;">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!--FIM DE TWEET-->
+  </div>
+
+  <!--FIM DA MAIN-->
+
+  <div class="right-side">
+
+    <div class="caixa container py-3">
+      <!--FOLLOWS-->
+      <div class="followsbox pb-2">
+        <p style="font-weight: 700;font-size:1rem;">Follows</p>
+        {% if followers %}
+        {% for follower in followers %}
+        <div class="card-image mb-4">
+
+          <div class="follows-image">
+            <div class="circle circle-2">
+              {% if follower.profile_image %}
+              <img src="{{follower.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem"
+                alt="Profile Pic">
+              {% else %}
+              <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic"
+                style="background-color: #1ba3f3;">
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="card-body-follower">
+            <p style="margin-bottom: 0px;">{{follower.user.username}}</p>
+            <a href="{% url 'profile' follower.user.id %}">
+              @{{follower}}
+            </a><br />
+          </div>
+          {% if request.user.id == profile.user.id %}
+          <div class="followoption" style="align-self: center;">
+            <a href="{% url 'unfollow' follower.user.id %}" class="btn rounded-pill btn-sm "
+              style=" color:#fff;  background-color: #1ba3f3;">Unfollow</a>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>None</p>
+        {% endif %}
+      </div>
+      <!--END FOLLOWS-->
+
+      <!--FOLLOWED BY-->
+      <p style="font-weight: 700;font-size:1rem;">Followed By</p>
+      {% if profile.followed_by.all %}
+      {% for following in profile.followed_by.all %}
+      <div class="card-image mb-4">
+        <div class="follows-image">
+          <div class="circle circle-2">
+            {% if following.profile_image %}
+            <img src="{{following.profile_image.url}}" width="200" height="200" class="img-fluid rounded-start imagem"
+              alt="Profile Pic">
+            {% else %}
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem " alt="Profile Pic"
+              style="background-color: #1ba3f3;">
+            {% endif %}
+          </div>
+        </div>
+        <div class="card-body-follower">
+          <p style="margin-bottom: 0px;">{{following.user.username}}</p>
+          <a href="{% url 'profile' following.user.id %}">
+            @{{following}}
+          </a><br />
+        </div>
+        {% if request.user.id == profile.user.id %}
+        <div class="followoption" style="align-self: center;">
+          {% if following in profile.follows.all %}
+          <a href="{% url 'unfollow' following.user.id %}" class="btn rounded-pill  btn-sm  "
+            style=" color:#fff;  background-color: #1ba3f3;">Unfollow</a>
+          {% else %}
+          <a href="{% url 'follow' following.user.id %}" class="btn rounded-pill  btn-sm "
+            style=" color:#fff;  background-color: #1ba3f3;">Follow</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% else %}
+      <p>None</p>
+      {% endif %}
+
+    </div>
+    <!--FIM DE FOLLOWED BY-->
+
+  </div>
+
+</div>
+
+{% endif %}
+{% endblock %}

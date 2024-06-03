@@ -15,13 +15,15 @@ class Message(models.Model):
 
     def number_likes(self):
         return self.likes.count()
+    def number_replies(self):
+        return self.replies.count()
 
     def __str__(self):
         return (
             f"<p class='fw-bold d-inline'>{self.user}</p>"
             f"<small class='text-muted'> @{str(self.user).lower()} &#183; </small>"
             f"<small class='text-muted'>({self.created_at:%Y-%m-%d %H:%M})</small>"
-            f"<br/>{self.body}..."
+            f"<br/>{self.body}"
         )
 
 

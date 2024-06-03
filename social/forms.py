@@ -51,6 +51,7 @@ class MessageForm(forms.ModelForm):
                 "placeholder": "What's happenning?!",
                 "class": "form-control",
                 "maxlength": "200",
+                "id":"twemoji-picker",
             }
         ),
         label="",

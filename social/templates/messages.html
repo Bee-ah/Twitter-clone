@@ -1,0 +1,60 @@
+
+{% load static %}
+{%  block content %}
+{% for mensagem in mensagens %}
+
+
+<div class="mensagem-geral m-0">
+    
+    <div class="tweet-img-position ">
+        <div class="circle circle-2">
+            {% if mensagem.user.profile.profile_image %}
+            <img src="{{ mensagem.user.profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
+            {% else %}
+            <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
+            {% endif %}
+        </div>
+
+    </div>
+    <div class="text-position ">
+        {{mensagem|safe}}
+        <div class="tweet-foot">
+            {% if user.is_authenticated %}
+            <small class="text-muted" style="display:flex;flex-direction:row;align-items: center;" id="like-container-{{mensagem.id}}">
+                <span id="like-count-{{ mensagem.id }}">{{ mensagem.number_likes }}</span>
+                <a href="{% url 'twitter_like' mensagem.id %}" 
+                hx-get="{% url 'twitter_like' mensagem.id %}" 
+                hx-trigger="click" 
+                hx-target="this"
+                hx-swap="none"
+                hx-on="htmx:afterOnLoad: updateLikeIcon(event, {{ mensagem.id }})"
+                style="padding: 5px;">
+                 {% if user in mensagem.likes.all %}
+                 <i id="like-icon-{{ mensagem.id }}" class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
+                 {% else %}
+                 <i id="like-icon-{{ mensagem.id }}" class="fa-regular fa-heart" style="color: #687684;"></i>
+                 {% endif %}
+                 
+             </a>
+             <span id="reply-count-{{ mensagem.id }}" style="padding-left: 5px;">{{ mensagem.number_replies }}</span>
+             <a href="{% url 'message_show' mensagem.id %}">
+             <i class="fa-regular fa-comment-dots" style="color: #687684; padding:5px;"></i>
+            </a>
+             {% if mensagem.parent_message %}
+                 <a style="padding-left: 5px;" href="{% url 'message_show' mensagem.parent_message.id %}" id="historico" data-bs-toggle="tooltip" data-bs-html="true" title="reply to {{mensagem.parent_message.user.username}}'s message">
+                    <i class="fa-solid fa-clock-rotate-left" style="color: #687684;"></i>
+                 </a>
+                 {% endif %} 
+            </small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% if page_obj.has_next %}
+<div hx-trigger="revealed" hx-get="{% url 'home' %}?page={{ page_obj.next_page_number }}" hx-swap="afterend">
+
+</div>
+{% endif %}
+{%  endblock  %}

@@ -38,44 +38,18 @@
         <form method="POST" class="custom-form" style="display:flex;flex-direction: column;width: 100%;">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn rounded-pill"
-                style="color:#fff; background-color:#1ba3f3;align-self: flex-end;">Tweet</button>
+            
+            <div style="align-self: flex-end; position: relative;">
+                <button type="submit" class="btn rounded-pill"
+                style="color:#fff; background-color:#1ba3f3;">Tweet</button>
+            <div class="emojiPickerContainer" style="display: none; position:absolute; top:-10px;right:-12px;z-index:50"></div>
+            </div>
+            
         </form>
         {% endif %}
     </div>
     {% if mensagens %}
-    {% for mensagem in mensagens %}
-    <div class="mensagem-geral m-0">
-        <div class="tweet-img-position ">
-            <div class="circle circle-2">
-                {% if mensagem.user.profile.profile_image %}
-                <img src="{{ mensagem.user.profile.profile_image.url }}" alt="{{profile.user.username}}" class="imagem">
-                {% else %}
-                <img src="{% static 'images/default.png' %}" class="img-fluid rounded-circle imagem" alt="Profile Pic">
-                {% endif %}
-            </div>
-
-        </div>
-        <div class="text-position ">
-            {{mensagem|safe}}
-            <div class="tweet-foot">
-                <small class="text-muted" style="display:flex;flex-direction:row;align-items: center;">
-                    {{mensagem.number_likes}}
-                    {% if user in mensagem.likes.all %}
-                    <a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
-                        <i class="fa-solid fa-heart" style="color: #ef1c5c;"></i>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'twitter_like' mensagem.id %}" style="padding: 5px;">
-                        <i class="fa-regular fa-heart" style="color: #687684;"></i>
-                    </a>
-                    {% endif %}
-                </small>
-            </div>
-        </div>
-    </div>
-
-    {% endfor %}
+    {% include 'messages.html'  %}
     {% else %}
     <h5 style="font-weight: 800;">Be the first to post a message!<i class="fa-regular fa-face-kiss-wink-heart" style="color: #ef1c5c;"></i></h5>
     {% endif %}
